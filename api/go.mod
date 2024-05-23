@@ -1,4 +1,4 @@
-module github.com/caffein/tracee/api
+module github.com/caffe-in/tracee/api
 
 go 1.21
 
