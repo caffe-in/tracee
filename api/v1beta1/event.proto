@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-option go_package = "github.co/aquasecurity/tracee/api/v1beta1";
+option go_package = "github.co/caffein/tracee/api/v1beta1";
 
 package tracee.v1beta1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "api/v1beta1/event_data.proto";
-import "api/v1beta1/threat.proto";
+import "event_data.proto";
+import "threat.proto";
 
 message Event {
     google.protobuf.Timestamp timestamp = 1;
