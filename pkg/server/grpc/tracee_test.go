@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	pb "github.com/aquasecurity/tracee/api/v1beta1"
 	"github.com/aquasecurity/tracee/types/trace"
+	pb "github.com/caffe-in/tracee/api/v1beta1"
 )
 
 func Test_convertEventWithProcessContext(t *testing.T) {

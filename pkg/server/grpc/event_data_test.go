@@ -7,9 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
-	pb "github.com/aquasecurity/tracee/api/v1beta1"
 	"github.com/aquasecurity/tracee/pkg/events"
 	"github.com/aquasecurity/tracee/types/trace"
+	pb "github.com/caffe-in/tracee/api/v1beta1"
 )
 
 func Test_getEventData(t *testing.T) {

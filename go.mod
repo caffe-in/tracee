@@ -12,6 +12,7 @@ require (
 	github.com/aquasecurity/tracee/api v0.0.0-20240426195556-d4b717cdf189
 	github.com/aquasecurity/tracee/signatures/helpers v0.0.0-20240122160245-67dec940088c
 	github.com/aquasecurity/tracee/types v0.0.0-20240122122429-7f84f526758d
+	github.com/caffe-in/tracee/api v0.0.0-20240523034859-37104b2e0ff5
 	github.com/containerd/containerd v1.7.14
 	github.com/docker/docker v24.0.9+incompatible
 	github.com/golang/protobuf v1.5.4

@@ -8,10 +8,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 
-	pb "github.com/aquasecurity/tracee/api/v1beta1"
 	tracee "github.com/aquasecurity/tracee/pkg/ebpf"
 	"github.com/aquasecurity/tracee/pkg/logger"
 	"github.com/aquasecurity/tracee/pkg/signatures/engine"
+	pb "github.com/caffe-in/tracee/api/v1beta1"
 )
 
 type Server struct {

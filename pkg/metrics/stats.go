@@ -18,6 +18,7 @@ type Stats struct {
 	LostWrCount      counter.Counter
 	LostNtCapCount   counter.Counter // lost network capture events
 	LostBPFLogsCount counter.Counter
+	TestCaffein      counter.Counter
 }
 
 // Register Stats to prometheus metrics exporter
@@ -97,6 +98,11 @@ func (stats *Stats) RegisterPrometheus() error {
 		Name:      "errors_total",
 		Help:      "errors accumulated by tracee-ebpf",
 	}, func() float64 { return float64(stats.ErrorCount.Get()) }))
+	err = prometheus.Register(prometheus.NewCounterFunc(prometheus.CounterOpts{
+		Namespace: "tracee_ebpf",
+		Name:      "test_caffein_total",
+		Help:      "test counter",
+	}, func() float64 { return float64(stats.TestCaffein.Get()) }))
 
 	return errfmt.WrapError(err)
 }

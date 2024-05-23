@@ -27,8 +27,6 @@ github.com/aquasecurity/libbpfgo v0.7.0-libbpf-1.4 h1:rQ94U12Xlz2tncE8Rxnw3vpp/9
 github.com/aquasecurity/libbpfgo v0.7.0-libbpf-1.4/go.mod h1:iI7QCIZ3kXG0MR+FHsDZck6cYs1y1HyZP3sMObBg0sk=
 github.com/aquasecurity/libbpfgo/helpers v0.4.6-0.20240313150344-0080df4914d9 h1:BMnpLW1ouA1xjEIQUVx6g/orqgVkTixdfRIJk+vYlFE=
 github.com/aquasecurity/libbpfgo/helpers v0.4.6-0.20240313150344-0080df4914d9/go.mod h1:JIFvPdLaEVJ6cS2lt52lcyUia9LkpxtTVijOaYesi5Q=
-github.com/aquasecurity/tracee/api v0.0.0-20240219122500-ea2c242dcd60 h1:8f4SC/qwZaOQGxnbtsYUwD15AN5MfYl77Et/fHDpx2k=
-github.com/aquasecurity/tracee/api v0.0.0-20240219122500-ea2c242dcd60/go.mod h1:o2YYIwIkn/nQM/JltGx1Lw6l9ojaEmYJPVGsZ+RYKcA=
 github.com/aquasecurity/tracee/api v0.0.0-20240426195556-d4b717cdf189 h1:Kg+A5eAUWAhY0US5lgxZdZ/ZRa9xqwB7jcB2pMnVyF0=
 github.com/aquasecurity/tracee/api v0.0.0-20240426195556-d4b717cdf189/go.mod h1:jXLAr/iFkfaNTuNcdbx2blngdMD/qaAfxQe9rCL9jwk=
 github.com/aquasecurity/tracee/signatures/helpers v0.0.0-20240122160245-67dec940088c h1:Gms5lUHPIq+OpI5HjcZ+l0NZHhSwBd/47nyUZY89c+M=
@@ -44,6 +42,8 @@ github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bytecodealliance/wasmtime-go/v3 v3.0.2 h1:3uZCA/BLTIu+DqCfguByNMJa2HVHpXvjfy0Dy7g6fuA=
 github.com/bytecodealliance/wasmtime-go/v3 v3.0.2/go.mod h1:RnUjnIXxEJcL6BgCvNyzCCRzZcxCgsZCi+RNlvYor5Q=
+github.com/caffe-in/tracee/api v0.0.0-20240523034859-37104b2e0ff5 h1:HUVqlJnF4L8JuGtM4jc7GN6aclR9Dx2tthI17Pe5jJc=
+github.com/caffe-in/tracee/api v0.0.0-20240523034859-37104b2e0ff5/go.mod h1:BjAnOeGGpmg3pkdYa8AExJYbn/rvDyWvKOwxPQFPaO4=
 github.com/cenkalti/backoff/v4 v4.2.1 h1:y4OZtCnogmCPw98Zjyt5a6+QwPLGkiQsYW5oUqylYbM=
 github.com/cenkalti/backoff/v4 v4.2.1/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

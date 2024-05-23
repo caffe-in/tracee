@@ -1,0 +1,14 @@
+apiVersion: tracee.aquasec.com/v1beta1
+kind: Policy
+metadata:
+  name: signatures
+  annotations:
+    description: traces all signatures
+spec:
+  scope:
+    - global
+  rules:
+    # display security events
+    # trace all container creations and removals
+    - event: container_create
+    - event: container_remove

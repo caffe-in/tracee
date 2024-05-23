@@ -102,6 +102,7 @@ WORKDIR /tracee
 COPY . /tracee
 
 RUN make clean && \
+    go env -w GOPROXY=https://goproxy.cn,direct && \
     BTFHUB=$BTFHUB make tracee && \
     BTFHUB=$BTFHUB make tracee-ebpf && \
     make tracee-rules && \
@@ -134,7 +135,7 @@ ENTRYPOINT ["/tracee/entrypoint.sh"]
 # tracee
 #
 
-FROM $FLAVOR
-USER root
-ENV HOME /tracee
-WORKDIR /tracee
+# FROM $FLAVOR
+# USER root
+# ENV HOME /tracee
+# WORKDIR /tracee

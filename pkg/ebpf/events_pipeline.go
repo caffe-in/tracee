@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/binary"
+	"fmt"
 	"strconv"
 	"sync"
 	"unsafe"
@@ -77,7 +78,12 @@ func (t *Tracee) handleEvents(ctx context.Context, initialized chan<- struct{}) 
 
 	// Sink pipeline stage: events go through printers.
 
-	errc = t.sinkEvents(ctx, eventsChan)
+	eventsChan, errc = t.sinkEvents(ctx, eventsChan)
+	errcList = append(errcList, errc)
+
+	// Create by Caffein
+	// Count events stage: events are counted and special metrics are updated.
+	errc = t.countEvents(ctx, eventsChan)
 	errcList = append(errcList, errc)
 
 	initialized <- struct{}{}
@@ -455,6 +461,11 @@ func (t *Tracee) processEvents(ctx context.Context, in <-chan *trace.Event) (
 
 			// Go through event processors if needed
 			errs := t.processEvent(event)
+			if events.ID(event.EventID) == events.ContainerCreate || events.ID(event.EventID) == events.ContainerRemove {
+				fmt.Println("Bonus!Container event, the event ID is: ", events.ID(event.EventID))
+				t.stats.TestCaffein.Increment()
+			}
+
 			if len(errs) > 0 {
 				for _, err := range errs {
 					t.handleError(err)
@@ -588,7 +599,66 @@ func (t *Tracee) deriveEvents(ctx context.Context, in <-chan *trace.Event) (
 // sinkEvents is the event sink pipeline stage. For each received event, it goes through a
 // series of printers that will print the event to the desired output. It also handles the
 // event pool, returning the event to the pool after it is processed.
-func (t *Tracee) sinkEvents(ctx context.Context, in <-chan *trace.Event) <-chan error {
+func (t *Tracee) sinkEvents(ctx context.Context, in <-chan *trace.Event) (
+	<-chan *trace.Event, <-chan error,
+) {
+	out := make(chan *trace.Event)
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		for {
+			select {
+			case event := <-in:
+				if event == nil {
+					continue // might happen during initialization (ctrl+c seg faults)
+				}
+
+				// Is the event enabled for the policies or globally?
+				if !t.policyManager.IsEnabled(event.MatchedPoliciesUser, events.ID(event.EventID)) {
+					// TODO: create metrics from dropped events
+					t.eventsPool.Put(event)
+					continue
+				}
+
+				// Only emit events requested by the user and matched by at least one policy.
+				id := events.ID(event.EventID)
+				event.MatchedPoliciesUser &= t.eventsState[id].Emit
+				if event.MatchedPoliciesUser == 0 {
+					t.eventsPool.Put(event)
+					continue
+				}
+
+				policies, err := policy.Snapshots().Get(event.PoliciesVersion)
+				if err != nil {
+					t.handleError(err)
+					continue
+				}
+				// Populate the event with the names of the matched policies.
+				event.MatchedPolicies = policies.MatchedNames(event.MatchedPoliciesUser)
+
+				// Parse args here if the rule engine is not enabled (parsed there if it is).
+				if !t.config.EngineConfig.Enabled {
+					err := t.parseArguments(event)
+					if err != nil {
+						t.handleError(err)
+					}
+				}
+				out <- event
+			case <-ctx.Done():
+				return
+			}
+
+			// Send the event to the streams.
+
+		}
+	}()
+
+	return out, errc
+}
+
+func (t *Tracee) countEvents(ctx context.Context, in <-chan *trace.Event) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -598,36 +668,9 @@ func (t *Tracee) sinkEvents(ctx context.Context, in <-chan *trace.Event) <-chan 
 			if event == nil {
 				continue // might happen during initialization (ctrl+c seg faults)
 			}
-
-			// Is the event enabled for the policies or globally?
-			if !t.policyManager.IsEnabled(event.MatchedPoliciesUser, events.ID(event.EventID)) {
-				// TODO: create metrics from dropped events
-				t.eventsPool.Put(event)
-				continue
-			}
-
-			// Only emit events requested by the user and matched by at least one policy.
-			id := events.ID(event.EventID)
-			event.MatchedPoliciesUser &= t.eventsState[id].Emit
-			if event.MatchedPoliciesUser == 0 {
-				t.eventsPool.Put(event)
-				continue
-			}
-
-			policies, err := policy.Snapshots().Get(event.PoliciesVersion)
-			if err != nil {
-				t.handleError(err)
-				continue
-			}
-			// Populate the event with the names of the matched policies.
-			event.MatchedPolicies = policies.MatchedNames(event.MatchedPoliciesUser)
-
-			// Parse args here if the rule engine is not enabled (parsed there if it is).
-			if !t.config.EngineConfig.Enabled {
-				err := t.parseArguments(event)
-				if err != nil {
-					t.handleError(err)
-				}
+			if events.ID(event.EventID) == events.ContainerCreate || events.ID(event.EventID) == events.ContainerRemove {
+				fmt.Println("Container event, the event ID is: ", events.ID(event.EventID))
+				t.stats.TestCaffein.Increment()
 			}
 
 			// Send the event to the streams.

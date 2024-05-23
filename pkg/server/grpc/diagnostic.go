@@ -4,9 +4,9 @@ import (
 	"context"
 	"runtime"
 
-	pb "github.com/aquasecurity/tracee/api/v1beta1"
 	tracee "github.com/aquasecurity/tracee/pkg/ebpf"
 	"github.com/aquasecurity/tracee/pkg/logger"
+	pb "github.com/caffe-in/tracee/api/v1beta1"
 )
 
 type DiagnosticService struct {
@@ -26,6 +26,7 @@ func (s *DiagnosticService) GetMetrics(ctx context.Context, in *pb.GetMetricsReq
 		LostWrCount:      stats.LostWrCount.Get(),
 		LostNtCapCount:   stats.LostNtCapCount.Get(),
 		LostBPFLogsCount: stats.LostBPFLogsCount.Get(),
+		TestCaffein:      stats.TestCaffein.Get(),
 	}
 
 	return metrics, nil
